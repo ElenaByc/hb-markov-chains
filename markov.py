@@ -101,7 +101,7 @@ def make_ngrams_chains(text_string, ngrams_size):
 
     return chains
 
-def make_ngrams_text(chains, n):
+def make_ngrams_text(chains):
     """Return text from chains."""
 
     words = []
@@ -142,12 +142,12 @@ print(input_text)
 
 # Get a Markov chain
 # chains = make_chains(input_text)
-chains = make_ngrams_chains(input_text, 5)
+chains = make_ngrams_chains(input_text, 3)
 for key, value in chains.items():
     print(key, value)
 
 # Produce random text
 # random_text = make_text(chains)
-random_text = make_ngrams_text(chains, 5)
+random_text = make_ngrams_text(chains)
 
 print(random_text)
