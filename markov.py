@@ -80,6 +80,48 @@ def make_text(chains):
     return ' '.join(words)
 
 
+def make_ngrams_chains(text_string, ngrams_size):
+    chains = {}
+
+    words = text_string.split()
+    keys_list = []
+
+    for i in range(len(words) - ngrams_size):
+        for j in range(ngrams_size):
+            keys_list.append(words[i + j])
+        key = tuple(keys_list)
+        keys_list = []
+        if key in chains:
+            chains[key].append(words[i + ngrams_size])
+        else:
+            chains[key] = [words[i + ngrams_size]]
+
+    return chains
+
+def make_ngrams_text(chains, n):
+    """Return text from chains."""
+
+    words = []
+
+    capital = False
+    while capital == False:
+        key = choice(list(chains.keys()))
+        if key[0][0].isupper():
+            capital = True
+    print("First random key:", key)
+    words.append(key[0])
+
+
+    while key in chains:
+        words.append(key[1])
+        next_words_list = chains[key]
+        # Make a new key out of the second word in the first key 
+        # and the random word you pulled out from the list of words that followed it.
+        key = (key[1], choice(next_words_list))
+        
+    words.append(key[1])
+    return ' '.join(words)
+
 # input_path = 'green-eggs.txt'
 # input_path = 'gettysburg.txt'
 input_path = sys.argv[1]
@@ -90,11 +132,12 @@ input_text = open_and_read_file(input_path)
 print(input_text)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+# chains = make_chains(input_text)
+chains = make_ngrams_chains(input_text, 5)
 for key, value in chains.items():
     print(key, value)
 
-# Produce random text
-random_text = make_text(chains)
+# # Produce random text
+# random_text = make_text(chains)
 
-print(random_text)
+# print(random_text)
