@@ -43,7 +43,14 @@ def make_chains(text_string):
 
     chains = {}
 
-    # your code goes here
+    words = text_string.split()
+
+    for i in range(len(words) - 2):
+        key1, key2 = words[i], words[i + 1]
+        if (key1, key2) in chains:
+            chains[(key1, key2)].append(words[i + 2])
+        else:
+            chains[(key1, key2)] = [words[i + 2]]
 
     return chains
 
@@ -64,8 +71,11 @@ input_path = 'green-eggs.txt'
 input_text = open_and_read_file(input_path)
 print(input_text)
 
-# # Get a Markov chain
-# chains = make_chains(input_text)
+# Get a Markov chain
+chains = make_chains(input_text)
+for key, value in chains.items():
+    print(key, value)
+
 
 # # Produce random text
 # random_text = make_text(chains)
