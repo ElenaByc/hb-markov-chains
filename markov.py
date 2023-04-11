@@ -60,8 +60,19 @@ def make_text(chains):
 
     words = []
 
-    # your code goes here
+    key = choice(list(chains.keys()))
+    print("First random key:", key)
+    words.append(key[0])
 
+
+    while key in chains:
+        words.append(key[1])
+        next_words_list = chains[key]
+        # Make a new key out of the second word in the first key 
+        # and the random word you pulled out from the list of words that followed it.
+        key = (key[1], choice(next_words_list))
+        
+    words.append(key[1])
     return ' '.join(words)
 
 
@@ -77,7 +88,7 @@ for key, value in chains.items():
     print(key, value)
 
 
-# # Produce random text
-# random_text = make_text(chains)
+# Produce random text
+random_text = make_text(chains)
 
-# print(random_text)
+print(random_text)
