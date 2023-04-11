@@ -10,7 +10,9 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    contents = open(file_path).read()
+    file = open(file_path)
+    contents = file.read()
+    file.close()
 
     return contents
 
@@ -90,6 +92,7 @@ def make_ngrams_chains(text_string, ngrams_size):
         for j in range(ngrams_size):
             keys_list.append(words[i + j])
         key = tuple(keys_list)
+        # key = tuple(words[i:i + n])
         keys_list = []
         if key in chains:
             chains[key].append(words[i + ngrams_size])
@@ -109,17 +112,23 @@ def make_ngrams_text(chains, n):
         if key[0][0].isupper():
             capital = True
     print("First random key:", key)
-    words.append(key[0])
+    # words.append(key[0])
+    words.extend(list(key[:-1]))
+    # print("words: ", words)
 
 
     while key in chains:
-        words.append(key[1])
+        words.append(key[-1])
+        # print("words: ", words)
         next_words_list = chains[key]
-        # Make a new key out of the second word in the first key 
+        # Make a new key out of the last (n-1) words in the first key 
         # and the random word you pulled out from the list of words that followed it.
-        key = (key[1], choice(next_words_list))
+        key = list(key[1:])
+        key.append(choice(next_words_list))
+        key = tuple(key)
+        print("new_key = ", key)
         
-    words.append(key[1])
+    words.append(key[-1])
     return ' '.join(words)
 
 # input_path = 'green-eggs.txt'
@@ -137,7 +146,8 @@ chains = make_ngrams_chains(input_text, 5)
 for key, value in chains.items():
     print(key, value)
 
-# # Produce random text
+# Produce random text
 # random_text = make_text(chains)
+random_text = make_ngrams_text(chains, 5)
 
-# print(random_text)
+print(random_text)
