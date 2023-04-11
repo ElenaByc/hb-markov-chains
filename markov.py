@@ -60,7 +60,11 @@ def make_text(chains):
 
     words = []
 
-    key = choice(list(chains.keys()))
+    capital = False
+    while capital == False:
+        key = choice(list(chains.keys()))
+        if key[0][0].isupper():
+            capital = True
     print("First random key:", key)
     words.append(key[0])
 
